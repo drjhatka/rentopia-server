@@ -22,20 +22,16 @@ const registerUser = async (userData: IUser) => {
       if (existingUser) {
          throw new AppError(StatusCodes.NOT_ACCEPTABLE, 'Email is already registered');
       }
-
       // Create the user
       const user = new User(userData);
       const createdUser = await user.save({ session });
-
+      //save data and commit session transaction
       await createdUser.save({ session });
       await session.commitTransaction();
-
       return await AuthService.loginUser({ email: createdUser.email, password: userData.password});
    } catch (error) {
-      if (session.inTransaction()) {
-         await session.abortTransaction();
-      }
-      throw error;
+      if (session.inTransaction()) {await session.abortTransaction()}
+         throw error;
    } finally {
       session.endSession();
    }

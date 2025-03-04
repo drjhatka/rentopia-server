@@ -6,9 +6,12 @@ import { StatusCodes } from "http-status-codes";
 import config from "../../config";
 
 const loginUser = catchAsync(async (req, res) => {
+
   const result = await AuthService.loginUser(req.body);
+
   const { refreshToken, accessToken } = result;
 
+  //set refresh Token in client cookies
   res.cookie("refreshToken", refreshToken, {
     secure: config.NODE_ENV === "production",
     httpOnly: true,
@@ -66,18 +69,6 @@ const forgotPassword = catchAsync(async (req: Request, res: Response) => {
   });
 });
 
-// reset password
-
-const verifyOTP = catchAsync(async (req: Request, res: Response) => {
-  const result = await AuthService.verifyOTP(req.body);
-
-  sendResponse(res, {
-    statusCode: StatusCodes.OK,
-    success: true,
-    message: "OTP verified successfully.",
-    data: result,
-  });
-});
 
 const resetPassword = catchAsync(async (req: Request, res: Response) => {
   const payload = req.body;
@@ -97,6 +88,5 @@ export const AuthController = {
   refreshToken,
   changePassword,
   forgotPassword,
-  verifyOTP,
   resetPassword,
 };
