@@ -2,7 +2,7 @@ import { Document, Model } from 'mongoose';
 import { Address, FullName, IUserRole } from './user.constant';
 
 export interface IUser extends Document {
-   name: FullName;
+   name: string;
    email: string;
    password: string;
    role: IUserRole;

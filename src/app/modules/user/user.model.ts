@@ -9,11 +9,7 @@ import { IUserRole } from './user.constant';
 // Create the User schema based on the interface
 const userSchema = new Schema<IUser, UserModel>(
    {
-      name: {
-         firstName: { type: String, required: true },
-         middleName: { type: String },
-         lastName: { type: String },
-       },
+      name: {type:String, required:true},
       email: {
          type: String,
          required: true,
@@ -33,7 +29,7 @@ const userSchema = new Schema<IUser, UserModel>(
          type:String,
       },
       address: {
-         street: { type: String, required: true },
+         street: { type: String },
          city: { type: String },
          zipCode: { type: String },
          country:{type:String}
@@ -64,20 +60,20 @@ const userSchema = new Schema<IUser, UserModel>(
    }
 );
 
-userSchema.pre('save', async function (next) {
-   const user = this;
+// userSchema.pre('save', async function (next) {
+//    const user = this;
 
-   user.password = await bcrypt.hash(
-      user.password,
-      Number(config.bcrypt_salt_rounds)
-   );
-   next();
-});
+//    user.password = await bcrypt.hash(
+//       user.password,
+//       Number(config.bcrypt_salt_rounds)
+//    );
+//    next();
+// });
 
-userSchema.post('save', function (doc, next) {
-   doc.password = '';
-   next();
-});
+// userSchema.post('save', function (doc, next) {
+//    doc.password = '';
+//    next();
+// });
 
 userSchema.set('toJSON', {
    transform: (_doc, ret) => {

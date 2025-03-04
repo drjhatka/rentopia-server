@@ -14,11 +14,9 @@ router.get('/', auth(IUserRole.ADMIN), UserController.getAllUser);
 
 router.get('/me', auth(IUserRole.ADMIN, IUserRole.LANDLORD, IUserRole.TENANT), UserController.myProfile);
 
-router.post(
-   '/',
-   clientInfoParser,
-   validateRequest(UserValidation.userCreateValidationSchema),
-   UserController.registerUser
+//clientInfoParser,
+//validateRequest(UserValidation.userCreateValidationSchema),
+router.post('/', UserController.registerUser
 );
 // update profile
 router.patch(

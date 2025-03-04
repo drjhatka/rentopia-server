@@ -12,7 +12,7 @@ import notFound from "./app/middleware/notFound";
 const app: Application = express();
 
 // Middleware setup
-app.use(cors({ origin: "http://localhost:3000" }));
+app.use(cors({ origin: ["http://localhost:3000", "https://www.thunderclient.com"] }));
 app.use(cookieParser());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -31,7 +31,7 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
 
   res.status(StatusCodes.OK).json({
     success: true,
-    message: "Welcome to the Next Mart",
+    message: "Welcome to Basha Finder",
     version: "1.0.0",
     clientDetails: {
       ipAddress: clientIp,
@@ -45,8 +45,8 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
       )} minutes`,
     },
     developerContact: {
-      email: "fahimfiroz.ph@gmail.com",
-      website: "https://programming-hero.com",
+      email: "bishawjit12@gmail.com",
+      website: "under_construction",
     },
   });
 });

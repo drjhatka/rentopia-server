@@ -16,7 +16,7 @@ export interface FullName  {
     lastName?:string
 }
 export interface Address  {
-    street:string;
+    street?:string;
     city?:string;
     zipCode?:string;
     country?:string

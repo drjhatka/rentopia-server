@@ -37,7 +37,6 @@ const loginUser = async (payload: IAuth) => {
          userId: user._id as string,
          name: user.name as string,
          email: user.email as string,
-         hasShop: user.hasShop,
          isActive: user.isActive,
          role: user.role,
       };
@@ -54,9 +53,7 @@ const loginUser = async (payload: IAuth) => {
          config.jwt_refresh_expires_in as string
       );
 
-      const updateUserInfo = await User.findByIdAndUpdate(
-         user._id,
-         { clientInfo: payload.clientInfo, lastLogin: Date.now() },
+      const updateUserInfo = await User.findByIdAndUpdate(user._id, { lastLogin: Date.now() },
          { new: true, session }
       );
 

@@ -1,4 +1,4 @@
-import { IUser} from './user.interface';
+import { IUser } from './user.interface';
 import User from './user.model';
 import AppError from '../../errors/appError';
 import { StatusCodes } from 'http-status-codes';
@@ -8,6 +8,9 @@ import { AuthService } from '../auth/auth.service';
 import { IJwtPayload } from '../auth/auth.interface';
 import { IUserSearchableFields } from './user.constant';
 import { validateUserAttributes } from './user.utils';
+import sendResponse from '../../utils/sendResponse';
+import { createToken } from '../auth/auth.utils';
+import config from '../../config';
 
 // Function to register user
 const registerUser = async (userData: IUser) => {
@@ -16,7 +19,7 @@ const registerUser = async (userData: IUser) => {
 
    try {
       session.startTransaction();
-      
+
       // Check if the user already exists by email
       const existingUser = await User.findOne({ email: userData.email }).session(session);
       if (existingUser) {
@@ -26,12 +29,32 @@ const registerUser = async (userData: IUser) => {
       const user = new User(userData);
       const createdUser = await user.save({ session });
       //save data and commit session transaction
-      await createdUser.save({ session });
+      const postedUser = await createdUser.save({ session });
       await session.commitTransaction();
-      return await AuthService.loginUser({ email: createdUser.email, password: userData.password});
+         const jwtPayload: IJwtPayload = {
+               userId: user._id as string,
+               name: user.name as string,
+               email: user.email as string,
+               isActive: user.isActive,
+               role: user.role,
+            };
+      
+            const accessToken = createToken(
+               jwtPayload,
+               config.jwt_access_secret as string,
+               config.jwt_access_expires_in as string
+            );
+      
+            const refreshToken = createToken(
+               jwtPayload,
+               config.jwt_refresh_secret as string,
+               config.jwt_refresh_expires_in as string
+            );
+            return {accessToken, refreshToken}
+      //return await AuthService.loginUser({email:userData.email,password:userData.password})
    } catch (error) {
-      if (session.inTransaction()) {await session.abortTransaction()}
-         throw error;
+      if (session.inTransaction()) { await session.abortTransaction() }
+      throw error;
    } finally {
       session.endSession();
    }
@@ -68,8 +91,8 @@ const updateProfile = async (
    const userOrNull = await User.findById(authUser.userId);
    validateUserAttributes(userOrNull)
 
-   const result = await User.findOneAndUpdate({ user: authUser.userId }, payload, 
-      {new: true}// return the updated document instead of modified count.
+   const result = await User.findOneAndUpdate({ user: authUser.userId }, payload,
+      { new: true }// return the updated document instead of modified count.
    )
    return result;
 };
