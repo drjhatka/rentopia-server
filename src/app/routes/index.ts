@@ -6,6 +6,7 @@ import { SSLRoutes } from '../modules/sslcommerz/sslcommerz.routes';
 
 import { ReviewRoutes } from '../modules/review/review.routes';
 import { MetaRoutes } from '../modules/meta/meta.route';
+import { RentalRoutes } from '../modules/listings/rental.routes';
 const router = Router();
 
 const moduleRoutes = [
@@ -16,6 +17,10 @@ const moduleRoutes = [
    {
       path: '/auth',
       route: AuthRoutes,
+   },
+   {
+      path: '/rental',
+      route: RentalRoutes,
    },
 
    // {
