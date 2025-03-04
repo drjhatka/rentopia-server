@@ -8,10 +8,7 @@ import config from '../../config';
 import { IJwtPayload } from '../auth/auth.interface';
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
-
-   const result = await UserServices.registerUser(
-      req.body
-   );
+   const result = await UserServices.registerUser(req.body);
 
    const { refreshToken, accessToken } = result;
 
@@ -59,7 +56,6 @@ const myProfile = catchAsync(async (req, res) => {
 const updateProfile = catchAsync(async (req, res) => {
    const result = await UserServices.updateProfile(
       req.body,
-      req.file as IImageFile,
       req.user as IJwtPayload
    );
 
