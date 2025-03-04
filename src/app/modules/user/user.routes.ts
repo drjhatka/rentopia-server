@@ -9,21 +9,31 @@ import { parseBody } from '../../middleware/bodyParser';
 import { IUserRole } from './user.constant';
 
 const router = Router();
-//get all
+
 router.get('/', auth(IUserRole.ADMIN), UserController.getAllUser);
-//get me
-router.get('/me', auth(IUserRole.ADMIN, IUserRole.TENANT, IUserRole.LANDLORD), UserController.myProfile);
-//create
-router.post('/',clientInfoParser, validateRequest(UserValidation.userCreateValidationSchema),UserController.registerUser);
-// update
-router.patch('/update-profile',auth(IUserRole.ADMIN,IUserRole.TENANT,IUserRole.TENANT,),
+
+router.get('/me', auth(IUserRole.ADMIN, IUserRole.LANDLORD, IUserRole.TENANT), UserController.myProfile);
+
+router.post(
+   '/',
+   clientInfoParser,
+   validateRequest(UserValidation.userCreateValidationSchema),
+   UserController.registerUser
+);
+// update profile
+router.patch(
+   '/update-profile',
+   auth(IUserRole.ADMIN, IUserRole.LANDLORD, IUserRole.TENANT),
    multerUpload.single('profilePhoto'),
    parseBody,
    //validateRequest(UserValidation.customerInfoValidationSchema),
    UserController.updateProfile
 );
-//update status
-router.patch('/:id/status',auth(IUserRole.ADMIN),UserController.updateUserStatus);
 
-//also delete....
+router.patch(
+   '/:id/status',
+   auth(IUserRole.ADMIN),
+   UserController.updateUserStatus
+);
+
 export const UserRoutes = router;
