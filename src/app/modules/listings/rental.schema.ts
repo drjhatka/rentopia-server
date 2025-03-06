@@ -20,6 +20,7 @@ const RentalListingSchema = new Schema<IRentalListing>(
       rating: { type: Number, default: 0 },
       reviews: { type: [String], default: [] },
       rent: { type: Number, required: true },
+      views: { type: Number },
       amenities: { type: [String], default: [] },
       availableFrom: { type: Date },
       availableUntil: { type: Date },

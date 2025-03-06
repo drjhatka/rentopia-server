@@ -15,6 +15,7 @@ export interface IRentalListing {
     amenities?:string[];
     availableFrom?:Date;
     availableUntil?:Date;
+    views?:number;
     images:string[];
     availability:'available'|'booked';
 

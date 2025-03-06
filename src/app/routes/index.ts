@@ -1,12 +1,9 @@
 import { Router } from 'express';
 import { UserRoutes } from '../modules/user/user.routes';
 import { AuthRoutes } from '../modules/auth/auth.routes';
-import { OrderRoutes } from '../modules/order/order.routes';
-import { SSLRoutes } from '../modules/sslcommerz/sslcommerz.routes';
-
-import { ReviewRoutes } from '../modules/review/review.routes';
-import { MetaRoutes } from '../modules/meta/meta.route';
 import { RentalRoutes } from '../modules/listings/rental.routes';
+import { RequestRoutes } from '../modules/rentalRequest/request.routes';
+import { OrderRoutes } from '../modules/order/order.routes';
 const router = Router();
 
 const moduleRoutes = [
@@ -21,6 +18,10 @@ const moduleRoutes = [
    {
       path: '/rental',
       route: RentalRoutes,
+   },
+   {
+      path: '/request',
+      route: RequestRoutes,
    },
 
    // {

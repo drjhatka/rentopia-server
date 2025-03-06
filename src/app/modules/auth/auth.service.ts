@@ -20,7 +20,8 @@ const loginUser = async (payload: IAuth) => {
 
       const user = await User.findOne({ email: payload.email }).session(
          session
-      );
+      )
+      console.log('user', user)
       if (!user) {
          throw new AppError(StatusCodes.NOT_FOUND, 'This user is not found!');
       }
@@ -28,7 +29,16 @@ const loginUser = async (payload: IAuth) => {
       if (!user.isActive) {
          throw new AppError(StatusCodes.FORBIDDEN, 'This user is not active!');
       }
+      const decode = await  bcrypt.compare(payload.password,user.password,function(error, result){
+         if(error){
+            console.log('error', error)
+         }
+         if(result){
+            console.log('result ', result)
+         }
+      })
 
+      console.log('decode ', decode)
       if (!(await User.isPasswordMatched(payload?.password, user?.password))) {
          throw new AppError(StatusCodes.FORBIDDEN, 'Password does not match');
       }
@@ -99,7 +109,6 @@ const refreshToken = async (token: string) => {
       userId: isUserExist._id as string,
       name: isUserExist.name as string,
       email: isUserExist.email as string,
-      hasShop: isUserExist.hasShop,
       isActive: isUserExist.isActive,
       role: isUserExist.role,
    };
@@ -185,52 +194,6 @@ const forgotPassword = async ({ email }: { email: string }) => {
    }
 };
 
-const verifyOTP = async (
-   { email, otp }: { email: string, otp: string }
-) => {
-   const user = await User.findOne({ email: email });
-
-   if (!user) {
-      throw new AppError(StatusCodes.NOT_FOUND, 'User not found');
-   }
-
-   if (!user.otpToken || user.otpToken === '') {
-      throw new AppError(
-         StatusCodes.BAD_REQUEST,
-         'No OTP token found. Please request a new password reset OTP.'
-      );
-   }
-
-   const decodedOtpData = verifyToken(
-      user.otpToken as string,
-      config.jwt_otp_secret as string
-   );
-
-   if (!decodedOtpData) {
-      throw new AppError(
-         StatusCodes.FORBIDDEN,
-         'OTP has expired or is invalid'
-      );
-   }
-
-   if (decodedOtpData.otp !== otp) {
-      throw new AppError(StatusCodes.FORBIDDEN, 'Invalid OTP');
-   }
-
-   user.otpToken = null;
-   await user.save();
-
-   const resetToken = jwt.sign({ email }, config.jwt_pass_reset_secret as string, {
-      expiresIn: config.jwt_pass_reset_expires_in,
-   });
-
-   // Return the reset token
-   return {
-      resetToken
-   };
-
-}
-
 const resetPassword = async ({
    token,
    newPassword,
@@ -282,6 +245,5 @@ export const AuthService = {
    refreshToken,
    changePassword,
    forgotPassword,
-   verifyOTP,
    resetPassword,
 };

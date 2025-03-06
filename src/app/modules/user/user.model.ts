@@ -62,18 +62,17 @@ const userSchema = new Schema<IUser, UserModel>(
 
 userSchema.pre('save', async function (next) {
    const user = this;
-
    user.password = await bcrypt.hash(
       user.password,
       Number(config.bcrypt_salt_rounds)
    );
+})
+
+
+userSchema.post('save', function (doc, next) {
+   doc.password = '';
    next();
 });
-
-// userSchema.post('save', function (doc, next) {
-//    doc.password = '';
-//    next();
-// });
 
 userSchema.set('toJSON', {
    transform: (_doc, ret) => {
@@ -86,7 +85,9 @@ userSchema.statics.isPasswordMatched = async function (
    plainTextPassword,
    hashedPassword
 ) {
-   return await bcrypt.compare(plainTextPassword, hashedPassword);
+   console.log('bcry ',plainTextPassword, hashedPassword)
+   const result=  await bcrypt.compare(plainTextPassword, hashedPassword);
+   return result
 };
 
 userSchema.statics.isUserExistsByEmail = async function (email: string) {

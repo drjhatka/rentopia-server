@@ -28,8 +28,9 @@ const registerUser = async (userData: IUser) => {
       // Create the user
       const user = new User(userData);
       const createdUser = await user.save({ session });
+      console.log('uuuuser', createdUser)
       //save data and commit session transaction
-      const postedUser = await createdUser.save({ session });
+      //const postedUser = await createdUser.save({ session });
       await session.commitTransaction();
          const jwtPayload: IJwtPayload = {
                userId: user._id as string,

@@ -13,7 +13,8 @@ export const createRental = catchAsync(async (req,  res, next) => {
 
 // GET all rental listings
 export const getRentals =  catchAsync(async(req, res, next) => {
-      const rentals = await Rental.find().populate('users', 'name email');
+     // const rentals = await Rental.find().populate('users', 'name email');
+      const rentals = await Rental.find();
       res.status(StatusCodes.OK).json({ success: true, data: rentals });
 });
 
