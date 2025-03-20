@@ -7,13 +7,13 @@ import catchAsync from '../../utils/catchAsync';
 
 // CREATE a new rental listing
 export const createRental = catchAsync(async (req,  res, next) => {
+   //console.log('b', req.body)
       const rental = await Rental.create(req.body);
       res.status(StatusCodes.CREATED).json({ success: true, data: rental });
 });
 
 // GET all rental listings
 export const getRentals =  catchAsync(async(req, res, next) => {
-     // const rentals = await Rental.find().populate('users', 'name email');
       const rentals = await Rental.find();
       res.status(StatusCodes.OK).json({ success: true, data: rentals });
 });
@@ -31,10 +31,12 @@ export const getRentalById = async (req: Request, res: Response) => {
    }
 };
 
+
 // UPDATE a rental listing by ID
-export const updateRental = async (req: Request, res: Response) => {
+export const updateRentalStatus = async (req: Request, res: Response) => {
    try {
-      const rental = await Rental.findByIdAndUpdate(req.params.id, req.body, {
+      //console.log('body---> ',req.params)
+      const rental = await Rental.findByIdAndUpdate(req.params.rentalId, {availability:'booked'}, {
          new: true, // Return updated document
          runValidators: true, // Validate before updating
       });
@@ -64,7 +66,7 @@ export const deleteRental = async (req: Request, res: Response) => {
 
 export const RentalController = {
     createRental,
-    updateRental,
+    updateRentalStatus,
     deleteRental,
     getRentalById,
     getRentals,

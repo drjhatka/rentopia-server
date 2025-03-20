@@ -10,9 +10,10 @@ export const createRequest = catchAsync(async (req: Request, res: Response) => {
    res.status(StatusCodes.CREATED).json({ success: true, data: request });
 });
 
+
 // GET all requests
 export const getRequests = catchAsync(async (req: Request, res: Response) => {
-   const requests = await RequestModel.find().populate('tenantId', 'name email').populate('listingId', 'title');
+   const requests = await RequestModel.find().populate('tenantId', 'name email').populate('listingId', 'title rent');
    res.status(StatusCodes.OK).json({ success: true, data: requests });
 });
 
@@ -25,11 +26,45 @@ export const getRequestById = catchAsync(async (req: Request, res: Response) => 
    res.status(StatusCodes.OK).json({ success: true, data: request });
 });
 
+
+//Get all requests based on status related to tenant ID
+export const getRequestsByTenantID = catchAsync(async (req, res) => {
+   //retrieve status category and tenant ID from body...
+   const {status, id} = req.params
+   //console.log('params',req.params)
+   //fetch data based on status and tenant ID
+   const request = await RequestModel.find({tenantId: id, status:status}).populate('tenantId', 'name email').populate('listingId', 'title images rent');
+   //throw error if there is an error...
+  // console.log('req', request)
+   if (!request) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'Requests not found');
+   }
+   res.status(StatusCodes.OK).json({ success: true, data: request });
+
+});
+
+//Get all requests based on status related to landlord ID
+export const getRequestsByLandlordID = catchAsync(async (req, res) => {
+   //retrieve status category and landlord ID from body...
+   const {status, id} = req.params
+   //fetch data based on status and landlord ID
+   const request = await RequestModel.find({landlordId: id, status:status}).populate('landlordId', 'name email').populate('listingId', 'title images');
+   console.log('req land', status, id)
+   if (!request) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'Requests not found');
+   }
+   res.status(StatusCodes.OK).json({ success: true, data: request });
+
+});
+
+
+
 // APPROVE a request
 export const approveRequest = catchAsync(async (req: Request, res: Response) => {
+   //console.log('rq', req.params)
    const request = await RequestModel.findByIdAndUpdate(
       req.params.id,
-      { status: 'approved', approvedDate: new Date(), landlordResponseMessage: req.body.landlordResponseMessage },
+      { status: 'approved', approvedDate: new Date() },
       { new: true, runValidators: true }
    );
 
@@ -70,6 +105,10 @@ export const RequestController = {
    createRequest,
    getRequests,
    getRequestById,
+
+   getRequestsByTenantID,
+   getRequestsByLandlordID,
+
    approveRequest,
    completeRequest,
    deleteRequest,

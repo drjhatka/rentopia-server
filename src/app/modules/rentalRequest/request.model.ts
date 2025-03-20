@@ -10,6 +10,7 @@ const RequestSchema = new Schema<IRequest>(
       message: { type: String, required: true },
       requestDate: { type: Date, default: Date.now, required:true },
       approvedDate: { type: Date },
+      moveInDate: { type: Date },
       checkoutDate: { type: Date },
 
       status: {
@@ -19,7 +20,7 @@ const RequestSchema = new Schema<IRequest>(
       },
 
       transactionId: { type: String },
-      landlordResponseMessage: { type: String },
+      landlordResponseMessage: { type: String, default:'' },
 
       // Tenant contact details (only revealed after approval)
       tenantPhone: { type: String },

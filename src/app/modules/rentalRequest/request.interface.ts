@@ -5,6 +5,7 @@ export interface IRequest {
     listingId:Types.ObjectId;
     landlordId:Types.ObjectId;
 
+    moveInDate?:Date;
     message:string;
     requestDate: Date;
     approvedDate?: Date;

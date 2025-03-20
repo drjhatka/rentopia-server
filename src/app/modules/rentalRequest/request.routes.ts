@@ -7,6 +7,11 @@ const router = express.Router();
 router.post('/', RequestController.createRequest); // Create a new request
 router.get('/', RequestController.getRequests); // Get all requests
 router.get('/:id', RequestController.getRequestById); // Get a specific request by ID
+
+router.get('/tenant/:id/:status', RequestController.getRequestsByTenantID);  
+router.get('/landlord/:id/:status', RequestController.getRequestsByLandlordID); 
+
+//router.patch('/:id/status', RequestController.approveRequest); // Update a request
 router.patch('/:id/approve', RequestController.approveRequest); // Approve a request
 router.patch('/:id/complete', RequestController.completeRequest); // Mark request as completed (checkout)
 router.delete('/:id', RequestController.deleteRequest); // Delete a request
