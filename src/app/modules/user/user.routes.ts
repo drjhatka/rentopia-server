@@ -10,7 +10,7 @@ import { IUserRole } from './user.constant';
 
 const router = Router();
 
-router.get('/', auth(IUserRole.ADMIN), UserController.getAllUser);
+router.get('/', UserController.getAllUser);
 
 router.get('/me', auth(IUserRole.ADMIN, IUserRole.LANDLORD, IUserRole.TENANT), UserController.myProfile);
 
@@ -30,7 +30,7 @@ router.patch(
 
 router.patch(
    '/:id/status',
-   auth(IUserRole.ADMIN),
+  
    UserController.updateUserStatus
 );
 

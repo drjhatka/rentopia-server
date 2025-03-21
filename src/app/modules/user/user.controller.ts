@@ -31,7 +31,7 @@ const registerUser = catchAsync(async (req: Request, res: Response) => {
 
 const getAllUser = catchAsync(async (req, res) => {
    const result = await UserServices.getAllUser(req.query);
-
+   console.log('req', result)
    sendResponse(res, {
       statusCode: StatusCodes.OK,
       success: true,
@@ -67,6 +67,7 @@ const updateProfile = catchAsync(async (req, res) => {
 });
 
 const updateUserStatus = catchAsync(async (req, res) => {
+   console.log('re', req)
    const userId = req.params.id;
    const result = await UserServices.updateUserStatus(userId);
 
