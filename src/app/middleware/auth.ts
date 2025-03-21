@@ -1,13 +1,13 @@
 import { NextFunction, Request, Response } from 'express';
 import jwt, { JwtPayload, TokenExpiredError } from 'jsonwebtoken';
 import config from '../config';
-import { UserRole } from '../modules/user/user.interface';
 import AppError from '../errors/appError';
 import catchAsync from '../utils/catchAsync';
 import { StatusCodes } from 'http-status-codes';
 import User from '../modules/user/user.model';
+import { IUserRole } from '../modules/user/user.constant';
 
-const auth = (...requiredRoles: UserRole[]) => {
+const auth = (...requiredRoles: IUserRole[]) => {
    return catchAsync(
       async (req: Request, res: Response, next: NextFunction) => {
          const token = req.headers.authorization;

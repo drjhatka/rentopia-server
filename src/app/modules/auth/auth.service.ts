@@ -82,48 +82,48 @@ const loginUser = async (payload: IAuth) => {
 };
 
 
-const refreshToken = async (token: string) => {
+// const refreshToken = async (token: string) => {
 
-   let verifiedToken = null;
-   try {
-      verifiedToken = verifyToken(
-         token,
-         config.jwt_refresh_secret as Secret
-      );
-   } catch (err) {
-      throw new AppError(StatusCodes.FORBIDDEN, 'Invalid Refresh Token');
-   }
+//    let verifiedToken = null;
+//    try {
+//       verifiedToken = verifyToken(
+//          token,
+//          config.jwt_refresh_secret as Secret |null
+//       );
+//    } catch (err) {
+//       throw new AppError(StatusCodes.FORBIDDEN, 'Invalid Refresh Token');
+//    }
 
-   const { userId } = verifiedToken;
+//    const { userId } = verifiedToken;
 
-   const isUserExist = await User.findById(userId);
-   if (!isUserExist) {
-      throw new AppError(StatusCodes.NOT_FOUND, 'User does not exist');
-   }
+//    const isUserExist = await User.findById(userId);
+//    if (!isUserExist) {
+//       throw new AppError(StatusCodes.NOT_FOUND, 'User does not exist');
+//    }
 
-   if (!isUserExist.isActive) {
-      throw new AppError(StatusCodes.BAD_REQUEST, 'User is not active');
-   }
+//    if (!isUserExist.isActive) {
+//       throw new AppError(StatusCodes.BAD_REQUEST, 'User is not active');
+//    }
 
 
-   const jwtPayload: IJwtPayload = {
-      userId: isUserExist._id as string,
-      name: isUserExist.name as string,
-      email: isUserExist.email as string,
-      isActive: isUserExist.isActive,
-      role: isUserExist.role,
-   };
+//    const jwtPayload: IJwtPayload = {
+//       userId: isUserExist._id as string,
+//       name: isUserExist.name as string,
+//       email: isUserExist.email as string,
+//       isActive: isUserExist.isActive,
+//       role: isUserExist.role,
+//    };
 
-   const newAccessToken = createToken(
-      jwtPayload,
-      config.jwt_access_secret as Secret,
-      config.jwt_access_expires_in as string
-   );
+//    const newAccessToken = createToken(
+//       jwtPayload,
+//       config.jwt_access_secret as Secret,
+//       config.jwt_access_expires_in as string
+//    );
 
-   return {
-      accessToken: newAccessToken,
-   };
-};
+//    return {
+//       accessToken: newAccessToken,
+//    };
+// };
 
 const changePassword = async (
    userData: JwtPayload,
@@ -243,7 +243,7 @@ const resetPassword = async ({
 
 export const AuthService = {
    loginUser,
-   refreshToken,
+   //refreshToken,
    changePassword,
    forgotPassword,
    resetPassword,

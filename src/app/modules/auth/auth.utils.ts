@@ -3,12 +3,11 @@ import { IJwtPayload } from './auth.interface';
 
 export const createToken = (
     jwtPayload: IJwtPayload,
-    secret: Secret,
+    secret: string,
     expiresIn: string,
 ) => {
-    return jwt.sign(jwtPayload, secret, {
-        expiresIn,
-    });
+    return jwt.sign(jwtPayload, secret  , {expiresIn:expiresIn} as jwt.SignOptions,
+    );
 };
 
 export const verifyToken = (token: string, secret: Secret) => {

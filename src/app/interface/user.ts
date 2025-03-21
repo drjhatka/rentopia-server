@@ -1,8 +1,8 @@
-import { UserRole } from '../modules/user/user.interface';
+import { IUserRole } from "../modules/user/user.constant";
 
 export type VerifiedUser = {
    email: string;
-   role: UserRole;
+   role: IUserRole;
    iat: number;
    exp: number;
 };
