@@ -34,7 +34,7 @@ const registerUser = async (userData: IUser) => {
       await session.commitTransaction();
          const jwtPayload: IJwtPayload = {
                userId: user._id as string,
-               name: user.name as string,
+               name: user.name.firstName as string,
                email: user.email as string,
                isActive: user.isActive,
                role: user.role,

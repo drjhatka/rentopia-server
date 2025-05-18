@@ -85,8 +85,9 @@ userSchema.statics.isPasswordMatched = async function (
    plainTextPassword,
    hashedPassword
 ) {
-   console.log('bcry ',plainTextPassword, hashedPassword)
+
    const result=  await bcrypt.compare(plainTextPassword, hashedPassword);
+   console.log('match', result)
    return result
 };
 

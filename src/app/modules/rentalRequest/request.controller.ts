@@ -74,6 +74,21 @@ export const approveRequest = catchAsync(async (req: Request, res: Response) => 
 
    res.status(StatusCodes.OK).json({ success: true, data: request, message: 'Request approved' });
 });
+// UPDATE a request
+export const updateRequest = catchAsync(async (req: Request, res: Response) => {
+   //console.log('rq', req.params)
+   const request = await RequestModel.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true, runValidators: true }
+   );
+
+   if (!request) {
+      throw new AppError(StatusCodes.NOT_FOUND, 'Request not found');
+   }
+
+   res.status(StatusCodes.OK).json({ success: true, data: request, message: 'Request approved' });
+});
 
 // COMPLETE a request (CHECKOUT)
 export const completeRequest = catchAsync(async (req: Request, res: Response) => {
@@ -109,6 +124,7 @@ export const RequestController = {
    getRequestsByTenantID,
    getRequestsByLandlordID,
 
+   updateRequest,
    approveRequest,
    completeRequest,
    deleteRequest,

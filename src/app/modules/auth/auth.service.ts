@@ -21,7 +21,6 @@ const loginUser = async (payload: IAuth) => {
       const user = await User.findOne({ email: payload.email }).session(
          session
       )
-      console.log('user', user)
       if (!user) {
          throw new AppError(StatusCodes.NOT_FOUND, 'This user is not found!');
       }
@@ -29,14 +28,16 @@ const loginUser = async (payload: IAuth) => {
       if (!user.isActive) {
          throw new AppError(StatusCodes.FORBIDDEN, 'This user is not active!');
       }
-      const decode = await  bcrypt.compare(payload.password,user.password,function(error, result){
-         if(error){
-            console.log('error', error)
-         }
-         if(result){
-            console.log('result ', result)
-         }
-      })
+
+      const decode = await bcrypt.compare(payload.password, user.password,
+         function (error, result) {
+            if (error) {
+               console.log('error', error)
+            }
+            if (result) {
+               console.log('result ', result)
+            }
+         })
 
       console.log('decode ', decode)
       if (!(await User.isPasswordMatched(payload?.password, user?.password))) {

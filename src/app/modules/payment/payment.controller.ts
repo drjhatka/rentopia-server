@@ -43,16 +43,18 @@ export async function getPaymentById(req: Request, res: Response) {
 // ✅ Get payments for a tenant by tenantId
 export async function getPaymentsByTenantId(req: Request, res: Response) {
    try {
+      console.log('rrrrrr', req.params)
       const { tenantId } = req.params;
-      const payments = await Payment.find({ userId: tenantId });
-
+      const payments = await Payment.find({ tenantId: tenantId });
+      console.log('p', payments)
       if (!payments.length) {
-         res.status(StatusCodes.NOT_FOUND).json({ success: false, message: "No payments found for this tenant" });
+          res.status(StatusCodes.NOT_FOUND).json({ success: false, message: "No payments found for this tenant" });
+          return
       }
 
-      res.status(StatusCodes.OK).json({ success: true, data: payments });
+       res.status(StatusCodes.OK).json({ success: true, data: payments });
    } catch (error: any) {
-      res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: error.message });
+      //res.status(StatusCodes.BAD_REQUEST).json({ success: false, message: error.message });
    }
 }
 
