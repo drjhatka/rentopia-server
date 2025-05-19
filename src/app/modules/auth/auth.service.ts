@@ -46,7 +46,7 @@ const loginUser = async (payload: IAuth) => {
 
       const jwtPayload: IJwtPayload = {
          userId: user._id as string,
-         name: user.name as string,
+         name: user.name.firstName as string,
          email: user.email as string,
          isActive: user.isActive,
          role: user.role,

@@ -9,7 +9,7 @@ import { IJwtPayload } from '../auth/auth.interface';
 
 const registerUser = catchAsync(async (req: Request, res: Response) => {
    const result = await UserServices.registerUser(req.body);
-   const { refreshToken, accessToken } = result;
+    const { refreshToken, accessToken } = result;
 
    res.cookie('refreshToken', refreshToken, {
       secure: config.NODE_ENV === 'production',

@@ -31,7 +31,7 @@ app.get("/", (req: Request, res: Response, next: NextFunction) => {
 
   res.status(StatusCodes.OK).json({
     success: true,
-    message: "Welcome to Basha Finder",
+    message: "Welcome to Rentopia Backend Serverer",
     version: "1.0.0",
     clientDetails: {
       ipAddress: clientIp,

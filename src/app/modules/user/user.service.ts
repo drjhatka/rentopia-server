@@ -14,7 +14,7 @@ import config from '../../config';
 
 // Function to register user
 const registerUser = async (userData: IUser) => {
-
+   console.log('user data', userData)
    const session = await mongoose.startSession();
 
    try {
@@ -28,7 +28,7 @@ const registerUser = async (userData: IUser) => {
       // Create the user
       const user = new User(userData);
       const createdUser = await user.save({ session });
-      console.log('uuuuser', createdUser)
+      console.log('uuuuser', createdUser.toJSON)
       //save data and commit session transaction
       //const postedUser = await createdUser.save({ session });
       await session.commitTransaction();

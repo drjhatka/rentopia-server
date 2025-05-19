@@ -9,7 +9,11 @@ import { IUserRole } from './user.constant';
 // Create the User schema based on the interface
 const userSchema = new Schema<IUser, UserModel>(
    {
-      name: {type:String, required:true},
+      name: {
+         firstName:{type:String, required:true},
+         middleName:{type:String},
+         lastName:{type:String},
+      },
       email: {
          type: String,
          required: true,
