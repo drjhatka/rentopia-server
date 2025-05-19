@@ -11,7 +11,7 @@ const auth = (...requiredRoles: IUserRole[]) => {
    return catchAsync(
       async (req: Request, res: Response, next: NextFunction) => {
          const token = req.headers.authorization;
-
+         
          if (!token) {
             throw new AppError(
                StatusCodes.UNAUTHORIZED,
@@ -26,6 +26,7 @@ const auth = (...requiredRoles: IUserRole[]) => {
             ) as JwtPayload;
 
             const { role, email } = decoded;
+            console.log('role & email', decoded)
 
             const user = await User.findOne({ email, role, isActive: true });
 

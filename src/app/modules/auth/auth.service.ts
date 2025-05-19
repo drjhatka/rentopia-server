@@ -22,7 +22,7 @@ const loginUser = async (payload: IAuth) => {
          session
       )
       if (!user) {
-         throw new AppError(StatusCodes.NOT_FOUND, 'This user is not found!');
+         throw new AppError(StatusCodes.NOT_FOUND, 'This user is unavailable!');
       }
 
       if (!user.isActive) {
@@ -52,6 +52,7 @@ const loginUser = async (payload: IAuth) => {
          role: user.role,
       };
 
+      console.log('JWT PAYLOAD ', jwtPayload)
       const accessToken = createToken(
          jwtPayload,
          config.jwt_access_secret as string,

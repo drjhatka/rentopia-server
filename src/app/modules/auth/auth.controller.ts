@@ -13,7 +13,7 @@ const loginUser = catchAsync(async (req, res) => {
 
   //set refresh Token in client cookies
   res.cookie("refreshToken", refreshToken, {
-    secure: config.NODE_ENV === "production",
+    secure: config.NODE_ENV === "production", // secure only when in production boolean test
     httpOnly: true,
     sameSite: "none",
     maxAge: 1000 * 60 * 60 * 24 * 365,
